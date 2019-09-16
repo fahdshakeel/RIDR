@@ -1,0 +1,21 @@
+.marketingButton {
+    margin: .7em;
+}
+html, body {
+    height: 100%;
+}
+
+header {
+  padding: 75px 0 75px;
+  background-color: #92D3FC;
+}
+
+section {
+  padding: 150px 0;
+}
+h1 {
+  font-family: josefin sans;
+}
+#services {
+  background-color: #92D3FC;
+}

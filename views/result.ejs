@@ -1,0 +1,173 @@
+<html>
+
+<head>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+        crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+</head>
+
+<style>
+    .card-logo {
+        border-right: 2px black;
+    }
+    .data-card:hover {
+        box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    #map {
+        width: 100%;
+        height: 200px;
+        background-color: grey;
+    }
+
+    .location-title {
+        font-size: 2rem;
+        font-family: 'Open Sans', sans-serif;
+        margin: 3rem;
+    }
+</style>
+
+<body style="background-color: #f4f4f4">
+
+    <div><a href="/"><button style="width:100%" class="btn btn-primary">Back</button></a> </div>
+
+    <!-- map div displays the map -->
+    <div id="map"></div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h1 class="location-title">
+                    <%= val.name %>
+                </h1>
+            </div>
+        </div>
+        <!-- loop through the ejs data and populate the page -->
+        <div class="row text-center">
+            <% for (let i=0; i < uberData.length; i++) { %>
+            <div class="data-card col-md-3">
+                <h4>
+                    <%= uberData[i].display_name %>
+                </h4>
+                <hr />
+                <div class="row text-center">
+                    <div class="col-lg-12">
+                        <p>
+                            Price: $<%= uberData[i].low_estimate %>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <% } %>
+
+            <!-- populate the lyft data -->
+            <% for (let i=0; i < lyftData.length; i++) { %>
+                <div class="data-card col-md-3">
+                    <h4>
+                        <%= lyftData[i].display_name %>
+                    </h4>
+                    <hr />
+                    <div class="row text-center">
+<<<<<<< HEAD
+                        <div class="col-lg-6 card-logo">
+                            LYFT LOGO
+                        </div>
+                        <div class="col-lg-6">
+=======
+                        <div class="col-lg-12">
+>>>>>>> origin/master
+                            <p>
+                                Price: $<%= lyftData[i].estimated_cost_cents_min / 100 %>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <% } %>
+
+                <% for (let i=0; i < cabs.length; i++) { %>
+                    <div class="data-card col-md-3">
+                        <h4>
+                            <%= cabs[i].name %>
+                        </h4>
+                        <hr />
+                        <div class="row text-center">
+                            <div class="col-lg-12">
+                                <p>
+                                    Phone: <%= cabs[i].display_phone %>
+                                </p>
+                                <p>
+                                <%= cabs[i].rating %> star
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <% } %>
+
+        </div>
+
+    </div>
+    </div>
+    </div>
+</body>
+
+<!-- Code below here for the google map -->
+<script>
+    console.log(parseFloat('<%= val.coordinates.latitude %>'))
+    // Initialize and add the map
+    function initMap() {
+        var directionsService = new google.maps.DirectionsService();
+        var directionsDisplay = new google.maps.DirectionsRenderer();
+
+        // The location of Uluru
+        var uluru = {
+            lat: parseFloat('<%= val.coordinates.latitude %>'),
+            lng: parseFloat('<%= val.coordinates.longitude %>'),
+        };
+
+        // The map, centered at Uluru
+        var map = new google.maps.Map(
+            document.getElementById('map'), {
+                gestureHandling: 'none',
+                zoomControl: true,
+                disableDefaultUI: true,
+                zoom: 14,
+                center: uluru
+            });
+        // The marker, positioned at Uluru
+        var marker = new google.maps.Marker({
+            position: uluru,
+            map: map
+        });
+        var lat1 = 0.0;
+        var long1 = 0.0;
+        navigator.geolocation.getCurrentPosition(position => {
+            lat1 = position.coords.latitude;
+            long1 = position.coords.longitude;
+            var userLoc = new google.maps.LatLng(lat1, long1);
+            directionsDisplay.setMap(map);
+
+
+            var request = {
+                origin: userLoc,
+                destination: uluru,
+                travelMode: 'DRIVING'
+            };
+            directionsService.route(request, function(result, status) {
+                if (status == 'OK') {
+                    directionsDisplay.setDirections(result);
+                }
+            });
+
+        })
+
+
+    }
+</script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC6UtxcZVztpcSZGOrCtAWfHSCN6PzJtL4&callback=initMap">
+</script>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.bundle.min.js" integrity="sha384-zDnhMsjVZfS3hiP7oCBRmfjkQC4fzxVxFhBx8Hkz2aZX8gEvA/jsP3eXRCvzTofP"
+    crossorigin="anonymous">
+</script>
+
+</html>
